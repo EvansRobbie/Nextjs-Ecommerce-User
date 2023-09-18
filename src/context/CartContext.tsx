@@ -1,5 +1,6 @@
 "use client"
-import React, {Dispatch, ReactNode, SetStateAction, createContext, useContext, useState} from 'react'
+import AsyncStorageService from '@/utils/AsyncServiceStorage'
+import React, {Dispatch, ReactNode, SetStateAction, createContext, useContext, useEffect, useState} from 'react'
 
 interface cart {
   _id:string
@@ -17,10 +18,31 @@ const CartContext = createContext<cartProps>({} as cartProps)
 
 const CartContextProvider = ({children}:{children:ReactNode}) => {
   const [cartProducts, setCartProducts] = useState<cart[] | null>(null)
-
+  useEffect(() => {
+    const fetchData = async () => {
+      if (cartProducts && cartProducts?.length > 0) {
+        await AsyncStorageService.setData('product_cart', cartProducts)
+       
+      }
+    }
+    const fetchCartProduct = async () =>{
+      const cartData = await AsyncStorageService.getData("product_cart")
+      setCartProducts(cartData)
+    }
+    fetchCartProduct()
+    fetchData()
+  }, [cartProducts])
+console.log(cartProducts)
   const addToCart = (productId:string) =>{
-    setCartProducts((prev:any) => [...prev, productId])
-}
+    setCartProducts((prev:any) => {
+      if (prev) {
+        return [...prev, productId];
+    } else {
+        return [productId];
+    }
+    
+})
+  }
   return (
     <CartContext.Provider value={{cartProducts, setCartProducts, addToCart}}>
         {children}

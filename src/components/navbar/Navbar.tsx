@@ -13,7 +13,7 @@ const Navbar = () => {
             <Link className='' href={'/'}>Home</Link>
             <Link className='' href={'/products'}>All Products</Link>
             <Link className='' href={'/categories'}>Categories</Link>
-            <Link className='' href={'cart'}>Cart({cartProducts ? cartProducts?.length : 0} )</Link>
+            <Link className='' href={'cart'}>Cart({cartProducts ? cartProducts?.length : 0})</Link>
             </nav>
 
         </div>
