@@ -1,9 +1,16 @@
+"use client"
 import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
 import CartIcon from '../icon/CartIcon'
+import { useCartContext } from '@/context/CartContext'
 
 const Featured = ({_id, title, desc, image}:{_id:string, title:string, desc:string, image:string[]}) => {
+    const {addToCart, cartProducts} = useCartContext()
+    const addFeaturedToCart = () =>{
+        addToCart(_id)
+    }
+    console.log(cartProducts)
     return (
         <div className='bg-slate-900 text-slate-200 py-8'>
             <div className='container'>
@@ -16,7 +23,7 @@ const Featured = ({_id, title, desc, image}:{_id:string, title:string, desc:stri
                         <div className='flex items-center'>
 
                             <Link href={`/product/${_id}`} className='secondary-btn !bg-transparent border !text-white inline-flex'>Read More</Link>
-                            <button className='primary-btn border border-orange-500  inline-flex items-center gap-2'>
+                            <button onClick={addFeaturedToCart} className='primary-btn border border-orange-500  inline-flex items-center gap-2'>
                                <CartIcon/>
                                 <span>
 
