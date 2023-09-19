@@ -20,9 +20,9 @@ interface dataProps {
 }
 
 const Featured = ({data}:dataProps) => {
-    const {addToCart, cartProducts} = useCartContext()
+    const {addToCart} = useCartContext()
     const addFeaturedToCart = () =>{
-        addToCart(data)
+        addToCart(data, data._id)
     }
     // console.log(cartProducts)
     return (

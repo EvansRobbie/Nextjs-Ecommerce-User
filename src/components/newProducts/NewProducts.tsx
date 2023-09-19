@@ -16,11 +16,12 @@ interface recentProps {
             color: string;
             storage: string
         }
+        qty?:number
     }[]
 }
 
 const NewProducts: React.FC<recentProps> = ({ recent }) => {
-    const {addToCart, cartProducts} = useCartContext()
+    const {addToCart} = useCartContext()
    
     return (
         <div className=" container px-4 py-8 ">
@@ -42,7 +43,7 @@ const NewProducts: React.FC<recentProps> = ({ recent }) => {
                                 <Link href={`product/${product._id}`} className='font-bold text-sm'>{product.title}</Link>
                                 <div className="flex items-center justify-between pt-4">
                                     <div>Ksh <span className='font-bold'>{product.price}</span></div>
-                                    <button onClick={() => addToCart(product)} className='border-2 border-orange-500 px-4 py-1.5 hover:text-slate-50 hover:bg-orange-500 flex items-center hover:border-orange-500 transition ease-in duration-300 font-bold gap-2 !rounded-md'>
+                                    <button onClick={() => addToCart(product, product._id)} className='border-2 border-orange-500 px-4 py-1.5 hover:text-slate-50 hover:bg-orange-500 flex items-center hover:border-orange-500 transition ease-in duration-300 font-bold gap-2 !rounded-md'>
                                         <CartIcon /> <span className='text-sm'>Add to cart</span>
                                     </button>
 

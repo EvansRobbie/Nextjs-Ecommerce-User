@@ -3,6 +3,7 @@ import './globals.css'
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import  { CartContextProvider } from '@/context/CartContext'
+import { Toaster } from 'react-hot-toast'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -21,6 +22,7 @@ export default function RootLayout({
       <CartContextProvider>
 
       <body className={inter.className}>
+      <Toaster position='bottom-right' reverseOrder={false}/>
         <Navbar/>
         <div>
           {children}
