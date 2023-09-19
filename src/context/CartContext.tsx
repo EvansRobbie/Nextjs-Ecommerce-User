@@ -1,57 +1,65 @@
 "use client"
 import AsyncStorageService from '@/utils/AsyncServiceStorage'
-import React, {Dispatch, ReactNode, SetStateAction, createContext, useContext, useEffect, useState} from 'react'
+import React, { Dispatch, ReactNode, SetStateAction, createContext, useContext, useEffect, useState } from 'react'
 
 interface cart {
-  _id:string
-  title:string
-  desc:string
-  price:string
-  image:string[]
+  _id: string;
+  title: string;
+  desc: string;
+  price: string;
+  image: string[];
+  properties?: {
+      color: string;
+      storage: string
+  }[]
 }
 interface cartProps {
   cartProducts: cart[] | null
-  setCartProducts:Dispatch<SetStateAction<cart[] | any>>
-  addToCart:(productId:string) =>void;
-} 
+  setCartProducts: Dispatch<SetStateAction<cart[] | any>>
+  addToCart: (productId: any) => void;
+}
 const CartContext = createContext<cartProps>({} as cartProps)
 
-const CartContextProvider = ({children}:{children:ReactNode}) => {
+const CartContextProvider = ({ children }: { children: ReactNode }) => {
   const [cartProducts, setCartProducts] = useState<cart[] | null>(null)
   useEffect(() => {
     const fetchData = async () => {
       if (cartProducts && cartProducts?.length > 0) {
         await AsyncStorageService.setData('product_cart', cartProducts)
-       
+
       }
     }
-    const fetchCartProduct = async () =>{
+
+    fetchData()
+  }, [cartProducts])
+
+  useEffect(() => {
+    const fetchCartProduct = async () => {
       const cartData = await AsyncStorageService.getData("product_cart")
       setCartProducts(cartData)
     }
     fetchCartProduct()
-    fetchData()
-  }, [cartProducts])
-console.log(cartProducts)
-  const addToCart = (productId:string) =>{
-    setCartProducts((prev:any) => {
+  }, [])
+
+  const addToCart = (productId: any) => {
+    setCartProducts((prev: any) => {
       if (prev) {
         return [...prev, productId];
-    } else {
+      } else {
         return [productId];
-    }
-    
-})
+      }
+
+    })
   }
   return (
-    <CartContext.Provider value={{cartProducts, setCartProducts, addToCart}}>
-        {children}
+    <CartContext.Provider value={{ cartProducts, setCartProducts, addToCart }}>
+      {children}
     </CartContext.Provider>
   )
 }
 
-const useCartContext = () =>{
+const useCartContext = () => {
   return useContext(CartContext)
 }
 
-export  { CartContextProvider, useCartContext}
+export { CartContextProvider, useCartContext }

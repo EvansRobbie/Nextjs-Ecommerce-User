@@ -5,24 +5,38 @@ import React from 'react'
 import CartIcon from '../icon/CartIcon'
 import { useCartContext } from '@/context/CartContext'
 
-const Featured = ({_id, title, desc, image}:{_id:string, title:string, desc:string, image:string[]}) => {
+interface dataProps {
+    data: {
+        _id: string;
+        title: string;
+        desc: string;
+        price: string;
+        image: string[];
+        properties?: {
+            color: string;
+            storage: string
+        }
+    }
+}
+
+const Featured = ({data}:dataProps) => {
     const {addToCart, cartProducts} = useCartContext()
     const addFeaturedToCart = () =>{
-        addToCart(_id)
+        addToCart(data)
     }
-    console.log(cartProducts)
+    // console.log(cartProducts)
     return (
         <div className='bg-slate-900 text-slate-200 py-8'>
             <div className='container'>
                 <div className='grid grid-cols-2 gap-10 items-center'>
 
                     <div>
-                        <h1 className='text-3xl font-bold capitalize'>{title}</h1>
-                        <p className='text-[#aaa] text-sm py-4'>{desc}
+                        <h1 className='text-3xl font-bold capitalize'>{data.title}</h1>
+                        <p className='text-[#aaa] text-sm py-4'>{data.desc}
                         </p>
                         <div className='flex items-center'>
 
-                            <Link href={`/product/${_id}`} className='secondary-btn !bg-transparent border !text-white inline-flex'>Read More</Link>
+                            <Link href={`/product/${data._id}`} className='secondary-btn !bg-transparent border !text-white inline-flex'>Read More</Link>
                             <button onClick={addFeaturedToCart} className='primary-btn border border-orange-500  inline-flex items-center gap-2'>
                                <CartIcon/>
                                 <span>
@@ -33,7 +47,7 @@ const Featured = ({_id, title, desc, image}:{_id:string, title:string, desc:stri
                         </div>
                     </div>
                     <div className='relative h-[40vh] w-[30vw]'>
-                        <Image fill={true} priority src={image[0]} alt='heroimage' />
+                        <Image fill={true} priority src={data.image[0]} alt='heroimage' />
                     </div>
                 </div>
             </div>

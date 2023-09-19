@@ -28,7 +28,7 @@ export default async function Home() {
   // console.log(data)
   return (
     <main className="">
-      <Featured {...data}/>
+      <Featured data= {data}/>
       <NewProducts recent = {recentProducts}/>
     </main>
   )
