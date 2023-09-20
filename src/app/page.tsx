@@ -11,7 +11,7 @@ import { notFound } from 'next/navigation'
 //   base_url = 'next-js-ecommerce-admin-gilt.vercel.app'
 // }
 const getProduct = async () =>{
-  const response = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/hero/`, {cache:'no-store'})
+  const response = await fetch(`/api/hero/`, {cache:'no-store'})
   if(!response.ok){
     return notFound()
   }
@@ -20,7 +20,7 @@ const getProduct = async () =>{
 }
 
 const getRecentProduct = async () =>{
-  const response = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/recent_products`, { next: { revalidate: 3600 } })
+  const response = await fetch(`/api/recent_products`, { next: { revalidate: 3600 } })
   if(!response.ok){
     return notFound()
   }
