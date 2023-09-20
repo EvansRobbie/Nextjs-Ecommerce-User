@@ -3,8 +3,15 @@ import NewProducts from '@/components/newProducts/NewProducts'
 import Image from 'next/image'
 import { notFound } from 'next/navigation'
 
+//@ts-ignore
+let base_url: string;
+if (process.env.NODE_ENV === 'development'){
+  base_url= 'http://localhost:3001'
+}else{
+  base_url = ''
+}
 const getProduct = async () =>{
-  const response = await fetch('http://localhost:3001/api/hero', {cache:'no-store'})
+  const response = await fetch(`${base_url}/api/hero`, {cache:'no-store'})
   if(!response.ok){
     return notFound()
   }
