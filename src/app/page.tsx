@@ -20,7 +20,7 @@ const getProduct = async () =>{
 }
 
 const getRecentProduct = async () =>{
-  const response = await fetch('http://localhost:3001/api/recent_products', { next: { revalidate: 3600 } })
+  const response = await fetch(`${base_url}/api/recent_products`, { next: { revalidate: 3600 } })
   if(!response.ok){
     return notFound()
   }
