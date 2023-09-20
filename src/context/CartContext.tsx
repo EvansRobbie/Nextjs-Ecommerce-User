@@ -9,6 +9,7 @@ interface ProductEntity {
     title:string,
     desc:string;
     image:string[],
+    price:string;
     properties?:{
       color:string;
       storage:string
@@ -76,7 +77,7 @@ const reducer = (cart: CartType, action: Action) => {
       return {
         ...cart,
         items: cart.items.map((item) => {
-          if (item._id === action.payload._id) {
+          if (item._id === action.payload.id) {
             toast.success(`Item QTY Increased`);
             return { ...item, qty: item.qty! + 1 };
           }
@@ -87,7 +88,7 @@ const reducer = (cart: CartType, action: Action) => {
     case ACTION.DECREASE_QUANTITY: {
       return {
         ...cart, items: cart.items.filter((item) => {
-          if (item._id === action.payload._id) {
+          if (item._id === action.payload.id) {
             // console.log(item.qty)
             if (item.qty! > 1) {
               toast.success(`Item QTY Decreased`)
@@ -145,21 +146,24 @@ const [cart, dispatch] = useReducer(reducer, { items: [] });
     }
     else {
       toast.success(`${item.title} added to Cart`)
+     
     }
     dispatch({ type: ACTION.ADD_TO_CART, payload: item })
   }
 // add ittems to local storage 
-useEffect(()=>{
+// useEffect(()=>{
 
-}, [cart])
+// }, [cart])
   const removeFromCart = (id:string, name:string) =>{
     toast.success(`${name} removed from Cart`)
     dispatch({type:ACTION.REMOVE_FROM_CART, payload:{id : id }})
   }
   const increaseQuantity = (id: string) => {
+    AsyncStorageService.setData("cartItems",{ ...cart.items});
     dispatch({ type: ACTION.INCREASE_QUANTITY, payload: { id: id } })
   }
   const decreaseQuantity = (id: string) => {
+    AsyncStorageService.setData("cartItems", cart.items);
     dispatch({ type: ACTION.DECREASE_QUANTITY, payload: { id: id } })
 
   }
@@ -169,7 +173,8 @@ useEffect(()=>{
         const data:any = await AsyncStorageService.getData("cartItems");
         if (data && Array.isArray(data)) {
           data.forEach((item) => {
-            dispatch({ type: ACTION.ADD_TO_CART, payload: item });
+            // console.log(item)
+            dispatch({ type: ACTION.ADD_TO_CART, payload: {...item} });
           });
         }
       } catch (error) {

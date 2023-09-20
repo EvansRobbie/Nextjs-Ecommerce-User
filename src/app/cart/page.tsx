@@ -1,10 +1,11 @@
 'use client'
 import { useCartContext } from '@/context/CartContext'
+import Image from 'next/image'
 import React from 'react'
 
-const featured = () => {
-  const { cart } = useCartContext()
-  console.log(cart)
+const Cart = () => {
+  const { cart, increaseQuantity, decreaseQuantity } = useCartContext()
+  // console.log(cart)
   return (
     <div className='grid grid-cols-3 w-full gap-8 container  my-6 p-4'>
       <div className=" bg-white rounded-xl p-4 col-span-2 shadow-md h-full">
@@ -15,15 +16,41 @@ const featured = () => {
           
             <div>
               <h2>cart</h2>
+              <table>
+                <thead>
+                  <tr>
+                    <td>Product</td>
+                    <td>Quantity</td>
+                    <td>Price</td>
+                  </tr>
+                </thead>
+                  {
+                    cart?.items.map((product)=>(
+                      <tr key={product._id} className=''>
+                        <td className='flex items-center gap-2'>
+                          <div className="relative w-[50px] flex-1 h-[150px] border">
+                            <Image className='object-fit  w-[10px]' priority fill src={product.image[0]} alt={`/${product.title}`}/>
+                          </div>
+                          <h4 className='flex-1'>{product.title}</h4>
+                        </td>
+                        <td className=''>
+                          <div className='w-full flex items-center justify-evenly '>
+                          <button onClick={() =>decreaseQuantity(product._id)} className='text-xl bg-[#eee] px-4 py-1.5 rounded-md font-medium cursor-pointer'>-</button>
+                          {product.qty}
+                          <button onClick={() =>increaseQuantity(product._id)} className='text-xl bg-[#eee] px-4 py-1.5 rounded-md font-medium cursor-pointer'>+</button>
+
+                          </div>
+                          </td>
+                        <td>{ Number(product.price) * product.qty! }</td>
+                      </tr>
+                    ))
+                  }
+                <tbody>
+                  
+                </tbody>
+              </table>
                 <div className=''>
 
-                {
-                  cart?.items.map((product)=>(
-                    <div key={product._id}>
-                      {product.title}
-                    </div>
-                  ))
-                }
                 </div>
             </div>
         )}
@@ -42,4 +69,4 @@ const featured = () => {
   )
 }
 
-export default featured
+export default Cart
