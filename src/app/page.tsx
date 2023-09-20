@@ -4,14 +4,14 @@ import Image from 'next/image'
 import { notFound } from 'next/navigation'
 
 //@ts-ignore
-let base_url: string;
-if (process.env.NODE_ENV === 'development'){
-  base_url= 'http://localhost:3001'
-}else{
-  base_url = ''
-}
+// let base_url: string;
+// if (process.env.NODE_ENV === 'development'){
+//   base_url= pro
+// }else{
+//   base_url = 'next-js-ecommerce-admin-gilt.vercel.app'
+// }
 const getProduct = async () =>{
-  const response = await fetch(`${base_url}/api/hero`, {cache:'no-store'})
+  const response = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/hero/`, {cache:'no-store'})
   if(!response.ok){
     return notFound()
   }
@@ -20,7 +20,7 @@ const getProduct = async () =>{
 }
 
 const getRecentProduct = async () =>{
-  const response = await fetch(`${base_url}/api/recent_products`, { next: { revalidate: 3600 } })
+  const response = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/recent_products`, { next: { revalidate: 3600 } })
   if(!response.ok){
     return notFound()
   }
