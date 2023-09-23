@@ -70,7 +70,7 @@ const reducer = (cart: CartType, action: Action) => {
     case ACTION.REMOVE_FROM_CART: {
 
       // console.log(cart.items)
-      return { ...cart, items: cart.items.filter((item) => item._id !== action.payload._id) }
+      return { ...cart, items: cart.items.filter((item) => item._id !== action.payload.id) }
 
     }
     case ACTION.INCREASE_QUANTITY: {
@@ -95,6 +95,7 @@ const reducer = (cart: CartType, action: Action) => {
               return { ...item, qty: item.qty! -= 1 }
 
             }
+           
             return item
           }
           return item
@@ -156,14 +157,14 @@ const [cart, dispatch] = useReducer(reducer, { items: [] });
 // }, [cart])
   const removeFromCart = (id:string, name:string) =>{
     toast.success(`${name} removed from Cart`)
+    // AsyncStorageService.removeData("cartItems");
     dispatch({type:ACTION.REMOVE_FROM_CART, payload:{id : id }})
   }
   const increaseQuantity = (id: string) => {
-    AsyncStorageService.setData("cartItems",{ ...cart.items});
     dispatch({ type: ACTION.INCREASE_QUANTITY, payload: { id: id } })
   }
   const decreaseQuantity = (id: string) => {
-    AsyncStorageService.setData("cartItems", cart.items);
+      cart.items.map((i)=> i.qty <= 1 && removeFromCart(id, i.title));
     dispatch({ type: ACTION.DECREASE_QUANTITY, payload: { id: id } })
 
   }
